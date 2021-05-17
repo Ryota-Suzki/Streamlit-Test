@@ -1,5 +1,5 @@
 altair==4.1.0
 altgraph==0.16.1
 pandas==0.25.1
-streamlit==0.81.
+streamlit==0.82.
 yfinance==0.1.59
