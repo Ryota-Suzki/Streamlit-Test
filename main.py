@@ -61,20 +61,23 @@ try:
         ['google','amazon','facebook','apple']
     )
 
-    data = df.loc[companies]
-    st.write("### 株価 (USD)", data.sort_index())
-    data = data.T.reset_index()
-    data = pd.melt(data, id_vars=['index']).rename(
-    columns={'value':'Stock Prices(USD)','index':'Date'}
-    )
-    chart = (alt.Chart(data)
-    .mark_line(opacity=0.8, clip=True)
-    .encode(
-    x="Date:T",
-    y=alt.Y("Stock Prices(USD):Q",stack=None,scale=alt.Scale(domain=[ymin,ymax])),
-    color="Name:N"
+    if not companies:
+        st.error('少なくとも1社は選んでください。')
+    else:
+        data = df.loc[companies]
+        st.write("### 株価 (USD)", data.sort_index())
+        data = data.T.reset_index()
+        data = pd.melt(data, id_vars=['index']).rename(
+            columns={'value':'Stock Prices(USD)','index':'Date'}
         )
-    )
-    st.altair_chart(chart, use_container_width=True)
+        chart = (alt.Chart(data)
+        .mark_line(opacity=0.8, clip=True)
+        .encode(
+            x="Date:T",
+            y=alt.Y("Stock Prices(USD):Q",stack=None,scale=alt.Scale(domain=[ymin,ymax])),
+            color="Name:N"
+            )
+        )
+        st.altair_chart(chart, use_container_width=True)
 except:
     st.error("おっと！なにかエラーが起きているようです。")
